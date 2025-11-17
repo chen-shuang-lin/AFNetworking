@@ -68,8 +68,13 @@ NSString * AFPercentEscapedStringFromString(NSString *string) {
 
         NSString *substring = [string substringWithRange:range];
         NSString *encoded = [substring stringByAddingPercentEncodingWithAllowedCharacters:allowedCharacterSet];
-        [escaped appendString:encoded];
-
+        // 添加 nil 检查
+        if (encoded) {
+            [escaped appendString:encoded];
+        } else {
+            // 降级处理：直接追加原始字符串或空字符串
+            [escaped appendString:substring ?: @""];
+        }
         index += range.length;
     }
 
